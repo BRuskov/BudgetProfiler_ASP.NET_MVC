@@ -31,6 +31,6 @@ namespace BudgetProfilerr.Models.Entities
         [Display(Name="Is Expense : ")]
         public bool isExpense { get; set; }
 
-        public CategoryModel CategoryID { get; set; }
+        public CategoryModel Category { get; set; }
     }
 }

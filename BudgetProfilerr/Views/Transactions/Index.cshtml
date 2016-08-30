@@ -26,7 +26,7 @@
                     <td>@Html.DisplayFor(m => item.TimeStamp)</td>
                     <td>@Html.DisplayFor(m => item.Description)</td>
                     <td>@Html.DisplayFor(s => item.User.FirstName)</td>
-                    <td>@Html.DisplayFor(s => item.CategoryID.Name)</td>
+                    <td>@Html.DisplayFor(s => item.Category.Name)</td>
                     <td><label class="label label-danger">Expense</label></td>
                     <td>
                         <table>
@@ -66,7 +66,7 @@
                     <td>@Html.DisplayFor(m => item.TimeStamp)</td>
                     <td>@Html.DisplayFor(m => item.Description)</td>
                     <td>@Html.DisplayFor(s => item.User.FirstName)</td>
-                    <td>@Html.DisplayFor(s => item.CategoryID.Name)</td>
+                    <td>@Html.DisplayFor(s => item.Category.Name)</td>
                     <td><label class="label label-success">Income</label></td>
                     <td>
                         <table>
@@ -117,10 +117,10 @@
         for(var property in myTrans)
         {
             if (myTrans.hasOwnProperty(property) && myTrans[property].isExpense == true ){
-                if(categories.Names.indexOf(myTrans[property].categoryID.name) > -1)
-                    categories.Totals[categories.Names.indexOf(myTrans[property].categoryID.name)] += myTrans[property].amount;
+                if(categories.Names.indexOf(myTrans[property].category.name) > -1)
+                    categories.Totals[categories.Names.indexOf(myTrans[property].category.name)] += myTrans[property].amount;
                 else {
-                    categories.Names.push(myTrans[property].categoryID.name);
+                    categories.Names.push(myTrans[property].category.name);
                     categories.Totals.push(myTrans[property].amount);
                 }
             }

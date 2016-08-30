@@ -14,7 +14,7 @@
     @Html.LabelFor(model => model.OwnerID)  //ListBox
     @Html.DropDownList("OwnerID", ViewBag.UserList as IEnumerable<SelectListItem>)
     <hr>
-    @Html.LabelFor(model => model.CategoryID) //ListBox
+    @Html.LabelFor(model => model.Category) //ListBox
     @Html.DropDownList("CategoryID", ViewBag.CategoryList as IEnumerable<SelectListItem>)
     <hr>
     @Html.LabelFor(model => model.TransactionDate)

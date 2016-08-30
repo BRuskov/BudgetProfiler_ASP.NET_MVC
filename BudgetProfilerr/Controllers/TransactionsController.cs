@@ -53,7 +53,7 @@ namespace BudgetProfilerr.Controllers
 
         private IQueryable<TransactionModel> GetUserTransactions(UserModel usr)
         {
-            var transactions = from transaction in db.Transactions.Include("User").Include("CategoryID")
+            var transactions = from transaction in db.Transactions.Include("User").Include("Category")
                                where transaction.User.ID == usr.ID
                                select transaction;
             return transactions;
@@ -156,7 +156,7 @@ namespace BudgetProfilerr.Controllers
                 isExpense = transaction.isExpense,
                 User = db.Users.Find(transaction.OwnerID),
                 Description = transaction.Description,
-                CategoryID = db.Categories.Find(transaction.CategoryID),
+                Category = db.Categories.Find(transaction.Category),
                 TimeStamp = DateTime.Now
             });
             db.SaveChanges();
@@ -165,8 +165,6 @@ namespace BudgetProfilerr.Controllers
         }
 
         // POST: Transactions/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,Description,Amount,TimeStamp,isExpense")] TransactionModel transactionModel)
@@ -198,8 +196,6 @@ namespace BudgetProfilerr.Controllers
         }
 
         // POST: Transactions/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,Description,Amount,TimeStamp,Direction")] TransactionModel transactionModel)
