@@ -1,0 +1,60 @@
+﻿@model BudgetProfilerr.Models.ModelViews.UserViewModel
+@{
+    ViewBag.Title = "Users";
+    ViewBag.Place = "users/index";
+}
+<hr>
+<p>
+    This is <i>user selection</i> and user <i>creation / modification</i>  screen
+</p>
+<!-- Choosing already made User-->
+@using (Html.BeginForm("Management", "Users"))
+{
+    <fieldset>
+        <legend>Already a User</legend>
+        <div class="row">
+            <label class="col-md-3  label label-default"><span class="glyphicon glyphicon-user"> User / Users : </span></label>
+        </div>
+        <div class="row">
+            <div>
+                @Html.ListBoxFor(m => Model.SelectedUser, ViewBag.UsersList as List<SelectListItem>, new { size = 3, id = "dropDownUser", @class = "col-md-3 text-right " })
+            </div>
+            <div class="col-md-1"></div>
+            <input class="col-md-2 btn btn-primary btn-lg" type="submit" value="Choose" />
+        </div>
+        <div class="managementSelect">
+            <label class="text text-primary"><span class="glyphicon glyphicon-play-circle"></span>Use: @Html.RadioButtonFor(m => Model.UserAction, "Use", new { @checked = true })</label>
+            <label class="text text-primary"><span class="glyphicon glyphicon-align-right"></span>Delete: @Html.RadioButtonFor(m => Model.UserAction, "Delete")</label>
+            <label class="text text-primary"><span class="glyphicon glyphicon-info-sign"></span>Info: @Html.RadioButtonFor(m => Model.UserAction, "Info")</label>
+            <label class="text text-primary"><span class="glyphicon glyphicon-edit"></span>Edit: @Html.RadioButtonFor(m => Model.UserAction, "Edit")</label>
+        </div>
+    </fieldset>
+}
+
+<!--Creating new User-->
+@using (Html.BeginForm("Create", "Users", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    <fieldset>
+        <legend>Create new User</legend>
+        <div class="row">
+            @Html.ValidationSummary(true)
+            <div class="form-group">
+                <div class="col-md-5">
+                    @Html.Label("", "First Name: ", new { @class = "control-label" })
+
+                    @Html.EditorFor(m => Model.FirstName)
+                    @Html.ValidationMessageFor(model => model.FirstName)
+                </div>
+                <div class="form-group col-md-5">
+                    @Html.Label("", "Last Name: ", new { @class = "control-label" })
+
+                    @Html.EditorFor(m => Model.LastName)
+                    @Html.ValidationMessageFor(model => model.LastName,"",new { @class="text-danger"})
+                </div>
+                <div class="col-md-2">
+                    <input class="btn btn-primary btn-lg" type="submit" value="Create">
+                </div>
+            </div>
+        </div>
+    </fieldset>
+}
