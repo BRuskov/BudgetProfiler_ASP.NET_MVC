@@ -42,6 +42,9 @@ namespace BudgetProfilerr.Controllers
         [HttpPost]
         public ActionResult Management([Bind(Include = "SelectedUser,UserAction")] UserViewModel usr)
         {
+            if (usr.SelectedUser == null)
+                return RedirectToAction("Index", "Users");
+
             List<UserModel> selectedUsers = new List<UserModel>();
             foreach (int user in usr.SelectedUser)
             {
