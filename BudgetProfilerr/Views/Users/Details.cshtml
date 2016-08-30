@@ -1,6 +1,5 @@
 ﻿@model IEnumerable<BudgetProfilerr.Models.Entities.UserModel>
-@ViewBag.Title = "Information"
-
+        
 <div class="row">
     <div class="col-md-5">
         <h1>Information<br><small>Showing the details for the selected users.</small></h1><br>User information displays their <mark>First Name</mark> and <mark>Last Name</mark>.
@@ -28,7 +27,14 @@
             </tr>
         }
     </table>
-
+    <div class="btn-group">
+        <div class="label btn">
+            <span class="glyphicon glyphicon-home success"></span>@Html.ActionLink("Home", "Index", "Home")
+        </div>
+        <div class="label btn">
+            <span class="glyphicon glyphicon-user"></span>@Html.ActionLink("Users", "Index", "Users")
+        </div>
+    </div>
 </div>
 
 

@@ -1,13 +1,15 @@
 ﻿@model BudgetProfilerr.Models.Entities.UserModel
-<div class="col-md-3">
-    <div id="editUserInput" style="border-right: 0.2em ridge; border-bottom: 0.2em ridge; margin-left: 1em; margin-bottom: 2em;">
+<tr>
+    <td>
         <div class="form-group">
             <label class="label label-default" for="FirstName">@Html.DisplayNameFor(model => model.FirstName)</label>
             @Html.EditorFor(m => Model.FirstName, new { htmlAttributes = new { @class = "form-horizontal", role = "form", value = Model.FirstName } })
         </div>
+    </td>
+    <td>
         <div class="form-group">
             <label class="label label-default" for="LastName">@Html.DisplayNameFor(model => model.LastName)</label>
             @Html.EditorFor(m => Model.LastName, new { value = Model.LastName })
         </div>
-    </div>
-</div>
+    </td>
+</tr>

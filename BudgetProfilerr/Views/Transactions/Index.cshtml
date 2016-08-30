@@ -41,7 +41,6 @@
                                 <td>
                                     @using (Html.BeginForm("EditTransaction", "Transactions", FormMethod.Post, new { id = item.ID }))
                                     {
-
                                         <input data-val="true" data-val-number="The field ID must be a number." data-val-required="The ID field is required." id="item_ID" name="editID" type="hidden" value=@item.ID />
                                         <input type="submit" role="button" class="btn btn-sm  btn-warning" value="Edit" />
                                     }
@@ -49,7 +48,6 @@
                                 <td>
                                     @using (Html.BeginForm("ShowTransaction", "Transactions", FormMethod.Post, new { id = item.ID }))
                                     {
-
                                         <input data-val="true" data-val-number="The field ID must be a number." data-val-required="The ID field is required." id="item_ID" name="showID" type="hidden" value=@item.ID />
                                         <input type="submit" role="button" class="btn btn-sm btn-primary" value="Show" />
                                     }

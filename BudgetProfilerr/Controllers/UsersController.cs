@@ -48,12 +48,12 @@ namespace BudgetProfilerr.Controllers
                 UserModel usrMdl = db.Users.Find(user);
                 selectedUsers.Add(usrMdl);
             }
+            Session["SelectedUsers"] = selectedUsers;
 
             switch (usr.UserAction)
             {
                 case "Use":
                     {
-                        Session["SelectedUsers"] = selectedUsers;
                         return RedirectToAction("Index", "Transactions");
                     }
                 case "Delete":
@@ -128,8 +128,6 @@ namespace BudgetProfilerr.Controllers
         }
 
         // POST: UserModels/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,FirstName,LastName")] UserModel userModel)
@@ -143,30 +141,78 @@ namespace BudgetProfilerr.Controllers
             return View(userModel);
         }
 
-        // GET: UserModels/Delete/5
-        public ActionResult Delete(int? id)
+        //// GET: UserModels/Delete/5
+        //public ActionResult Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    UserModel userModel = db.Users.Find(id);
+        //    if (userModel == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(userModel);
+        //}
+
+        //// POST: UserModels/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult DeleteConfirmed(int id)
+        //{
+        //    UserModel userModel = db.Users.Find(id);
+        //    db.Users.Remove(userModel);
+        //    db.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
+
+        //Post
+        [HttpPost]
+        public ActionResult DeleteUsers()
         {
-            if (id == null)
+            //
+            if (!isSelectedUserListInit())
+                return RedirectToAction("Index", "Users");
+
+            List<UserModel> selectedUsers = new List<UserModel>();
+            selectedUsers = Session["SelectedUsers"] as List<UserModel>;
+            //Session["SelectedUsers"] = null; //Transaction Module Protection
+
+            //Deleting corresponding transactions
+            foreach (var user in selectedUsers)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                var transQuery = from trans in db.Transactions
+                                 where trans.User.ID == user.ID
+                                 select trans;
+                db.Transactions.RemoveRange(transQuery);
+                var usrDel = db.Users.Find(user.ID);
+                db.Users.Remove(usrDel);
             }
-            UserModel userModel = db.Users.Find(id);
-            if (userModel == null)
-            {
-                return HttpNotFound();
-            }
-            return View(userModel);
+            db.SaveChanges();
+
+            return RedirectToAction("Index", "Users");
         }
 
-        // POST: UserModels/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        //Post
+        [HttpPost]
+        public ActionResult UpdateUsers([Bind(Include = "FirstName,LastName")]string[] FirstName, string[] LastName)
         {
-            UserModel userModel = db.Users.Find(id);
-            db.Users.Remove(userModel);
+            //Session with selectedUsers check
+            if (!isSelectedUserListInit())
+                return RedirectToAction("Index", "Users");
+
+            List<UserModel> selectedUsers = Session["SelectedUsers"] as List<UserModel>;
+            for (int i = 0; i < selectedUsers.Count; i++)
+            {
+                UserModel usr = db.Users.Find(selectedUsers[i].ID);
+                usr.FirstName = FirstName[i];
+                usr.LastName = LastName[i];
+                db.Entry(usr).State = EntityState.Modified;
+            }
+
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Users");
         }
 
         protected override void Dispose(bool disposing)
@@ -176,6 +222,13 @@ namespace BudgetProfilerr.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private bool isSelectedUserListInit()
+        {
+            if (Session["SelectedUsers"] == null)
+                return false;
+            return true;
         }
     }
 }
