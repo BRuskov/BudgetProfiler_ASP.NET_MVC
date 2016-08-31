@@ -1,27 +1,40 @@
 ﻿@model BudgetProfilerr.Models.ModelViews.CreateTransactionViewModel
 <hr>
-@using (Html.BeginForm("PublishTransaction","Transactions",FormMethod.Post))
+@using (Html.BeginForm("PublishTransaction", "Transactions", FormMethod.Post, new { @class = "form-inline" }))
 {
-    @Html.LabelFor(model => model.Amount)
-    @Html.EditorFor(m => m.Amount)
-    <hr>
-    @Html.LabelFor(model => model.Description)
-    @Html.EditorFor(model => model.Description)
-    <hr>
-    @Html.LabelFor(model => model.isExpense)
-    @Html.EditorFor(model => model.isExpense)
-    <hr>
-    @Html.LabelFor(model => model.OwnerID)  //ListBox
-    @Html.DropDownList("OwnerID", ViewBag.UserList as IEnumerable<SelectListItem>)
-    <hr>
-    @Html.LabelFor(model => model.Category) //ListBox
-    @Html.DropDownList("CategoryID", ViewBag.CategoryList as IEnumerable<SelectListItem>)
-    <hr>
-    @Html.LabelFor(model => model.TransactionDate)
-    @Html.EditorFor(model => model.TransactionDate)
-    <input type="submit" role="button" class="btn btn-default" value="Create" />
-}
+    <div class="form-group">
+        <div class="col-xs-3">
+            @*@Html.LabelFor(model => model.Amount)*@
+            @Html.EditorFor(m => m.Amount, new { htmlAttributes = new { @class = "form-control input-sm", placeholder = "Amount" } })
+        </div>
+        <div class="col-xs-3">
+            @*@Html.LabelFor(model => model.Description)*@
+            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control input-sm", placeholder = "Descrption" } })
+        </div>
+        <div class="col-xs-2">
+            <div class="form-group">
+                @*@Html.LabelFor(model => model.OwnerID)*@
+                @Html.DropDownList("OwnerID", ViewBag.UserList as IEnumerable<SelectListItem>, new { @class = "form-control input-sm" })
+            </div>
+        </div>
+        <div class="col-xs-3">
+            @*@Html.LabelFor(model => model.Category)*@
+            @Html.DropDownList("CategoryID", ViewBag.CategoryList as IEnumerable<SelectListItem>, new { @class = "form-control input-sm" })
+        </div>
+        <div class="col-xs-1">
+            <div class="checkbox">
+                @Html.EditorFor(model => model.isExpense)
+                @Html.LabelFor(model => model.isExpense)
+            </div>
+        </div>
+    </div>
 
+    @*<div class="form-group">
+            @Html.LabelFor(model => model.TransactionDate)
+            @Html.EditorFor(model => model.TransactionDate)
+        </div>*@
+    <input type="submit" role="button" class="btn btn-default" value="3" />
+}
 
 @*@model BudgetProfilerr.Models.Entities.TransactionModel
 

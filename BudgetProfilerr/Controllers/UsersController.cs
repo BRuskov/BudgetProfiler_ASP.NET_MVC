@@ -21,6 +21,8 @@ namespace BudgetProfilerr.Controllers
         public ActionResult Index()
         {
             List<SelectListItem> selectItemsList = new List<SelectListItem>();
+            
+
             foreach (var user in db.Users)
             {
                 if (user != null)

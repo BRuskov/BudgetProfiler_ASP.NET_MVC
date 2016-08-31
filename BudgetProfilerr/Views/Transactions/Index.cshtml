@@ -6,7 +6,10 @@
 <div class="row">
     @Html.Partial("_TransactionNavBar", Model.SelectedUsers)
     <div class="col-md-3"><h3>Tab For User Specific Information</h3></div>
-    <table class="col-md-9 table">
+    <div class="row">
+        @*@Html.Partial("_transactionAdd", new BudgetProfilerr.Models.ModelViews.CreateTransactionViewModel())*@
+    </div>
+    <table class="table table-condensed">
         <thead style="text-align: right">
             <tr>
                 <th>Amount</th>
@@ -35,21 +38,21 @@
                                     @using (Html.BeginForm("DeleteTransaction", "Transactions", FormMethod.Post, new { id = item.ID }))
                                     {
                                         <input data-val="true" data-val-number="The field ID must be a number." data-val-required="The ID field is required." id="item_ID" name="deleteID" type="hidden" value=@item.ID />
-                                        <input type="submit" role="button" style="text-align: center" class="btn btn-sm btn-default" value="Delete" />
+                                            <input type="submit" role="button" style="text-align: center" class="btn btn-sm btn-default" value="Delete" />
                                     }
                                 </td>
                                 <td>
                                     @using (Html.BeginForm("EditTransaction", "Transactions", FormMethod.Post, new { id = item.ID }))
                                     {
                                         <input data-val="true" data-val-number="The field ID must be a number." data-val-required="The ID field is required." id="item_ID" name="editID" type="hidden" value=@item.ID />
-                                        <input type="submit" role="button" class="btn btn-sm  btn-warning" value="Edit" />
+                                            <input type="submit" role="button" class="btn btn-sm  btn-warning" value="Edit" />
                                     }
                                 </td>
                                 <td>
                                     @using (Html.BeginForm("ShowTransaction", "Transactions", FormMethod.Post, new { id = item.ID }))
                                     {
                                         <input data-val="true" data-val-number="The field ID must be a number." data-val-required="The ID field is required." id="item_ID" name="showID" type="hidden" value=@item.ID />
-                                        <input type="submit" role="button" class="btn btn-sm btn-primary" value="Show" />
+                                            <input type="submit" role="button" class="btn btn-sm btn-primary" value="Show" />
                                     }
                                 </td>
                             </tr>
@@ -97,9 +100,8 @@
             }
         }
     </table>
-</div> <!--/row end-->  
+</div> <!--/row end-->
 <div class="ct-chart ct-green-section" id="pieChart"></div>
-
 <script>
     var myTrans = @JavascriptConvert.SerializeObject(Model.Transactions);
     console.log(myTrans);
