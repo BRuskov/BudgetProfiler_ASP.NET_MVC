@@ -10,7 +10,6 @@ namespace BudgetProfilerr.Models.Entities
     public class TransactionModel
     {
         public TransactionModel() { }
-
         [Key]
         public int ID { get; set; }
 
@@ -26,6 +25,7 @@ namespace BudgetProfilerr.Models.Entities
         public UserModel User { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
+        [Required]
         public DateTime TimeStamp { get; set; }
 
         [Display(Name="Is Expense : ")]

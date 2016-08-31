@@ -13,12 +13,12 @@ namespace BudgetProfilerr.Models.ModelViews
 
         [StringLength(20)]
         [Required]
-        [RegularExpression(@"([a-zA-Z\d]+[\w\d]*|)[a-zA-Z]+[\w\d.]*", ErrorMessage = "Invalid username")]
+        //[RegularExpression(@"[A-Za-z]", ErrorMessage = "Incorret format")]
         public string FirstName { get; set; }
 
         [StringLength(20)]
         [Required]
-        [RegularExpression(@"([a-zA-Z\d]+[\w\d]*|)[a-zA-Z]+[\w\d.]*", ErrorMessage = "Invalid username")]
+        //[RegularExpression(@"[A-Za-z]", ErrorMessage = "Incorrect format")]
         public string LastName { get; set; }
     }
 }

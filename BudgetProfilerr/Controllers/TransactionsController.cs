@@ -25,6 +25,8 @@ namespace BudgetProfilerr.Controllers
                 return RedirectToAction("Index", "Users");
             }
 
+
+
             List<UserModel> selectedUsers = Session["SelectedUsers"] as List<UserModel>;
 
             IQueryable<TransactionModel> queryTransactions = null;
@@ -34,6 +36,9 @@ namespace BudgetProfilerr.Controllers
             displayTransactions.Transactions = new List<TransactionModel>();
             displayTransactions.Transactions = queryTransactions.ToList<TransactionModel>();
             displayTransactions.SelectedUsers = selectedUsers;
+
+            updateCategoryDropDownList();
+            updateUserDropDownList();
 
             return View(displayTransactions);
         }
@@ -148,18 +153,21 @@ namespace BudgetProfilerr.Controllers
         }
 
         [HttpPost]
-        public ActionResult PublishTransaction(CreateTransactionViewModel transaction)
+        public ActionResult PublishTransaction([Bind(Include = "Amount,isExpense,OwnerID,Description,Category,TransactionDate")]  DisplayTransactionViewModel transaction)
         {
-            db.Transactions.Add(new TransactionModel()
+            if (ModelState.IsValid)
             {
-                Amount = transaction.Amount,
-                isExpense = transaction.isExpense,
-                User = db.Users.Find(transaction.OwnerID),
-                Description = transaction.Description,
-                Category = db.Categories.Find(transaction.Category),
-                TimeStamp = DateTime.Now
-            });
-            db.SaveChanges();
+                db.Transactions.Add(new TransactionModel()
+                {
+                    Amount = transaction.Amount,
+                    isExpense = transaction.isExpense,
+                    User = db.Users.Find(transaction.OwnerID),
+                    Description = transaction.Description,
+                    Category = db.Categories.Find(transaction.Category),
+                    TimeStamp = transaction.TransactionDate
+                });
+                db.SaveChanges();
+            }
 
             return RedirectToAction("Index", "Transactions");
         }

@@ -17,7 +17,6 @@ namespace BudgetProfilerr.Models
         public DbSet<CategoryModel> Categories { get; set; }
         public DbSet<TransactionModel> Transactions { get; set; }
         public DbSet<UserModel> Users { get; set; }
-        public DbSet<UserCategory> UserCategory { get; set; }
-        
+        public DbSet<UserCategory> UserCategory { get; set; }   
     }
 }
