@@ -18,91 +18,25 @@
     <!--./Transaction Creation-->
 </div>
 <div class="row">
-    <div class="col-md-7">
         <!--Transaction Table-->
         @Html.Partial("_transactionTable", Model)
         <!--./Transaction Table-->
-    </div>
-    <div class="col-md-5">
-        <div class="ct-chart ct-green-section" id="pieChart" style="font-size: 30px"></div>
-    </div>
 </div>
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
 <script>
-    var myTrans = @JavascriptConvert.SerializeObject(Model.Transactions);
-    console.log(myTrans);
-    totalExpenses(myTrans);
-
     $(document).ready(
-        function(){
+        function () {
             $('#transactiontable').hover(
-                function(){
-                    $(this).fadeTo('slow',0.9)
-                },function(){
-                    $(this).fadeTo('slow',0.55)
+                function () {
+                    $(this).fadeTo('slow', 0.9)
+                }, function () {
+                    $(this).fadeTo('slow', 0.65)
                 }),
             $('#transactionform').hover(
-                function(){
-                    $(this).fadeTo('slow',0.9)
-                },function(){
-                    $(this).fadeTo('slow',0.55)
+                function () {
+                    $(this).fadeTo('slow', 0.9)
+                }, function () {
+                    $(this).fadeTo('slow', 0.55)
                 })
         });
-
-    // Calculates the total expenses per category for cumulatively for all of the selected users.
-    function totalExpenses(myTrans)
-    {
-        var categories = {};
-        categories.Names = [];
-        categories.Totals = [];
-
-        $(document).ready(function(){
-            $('[dataToggle="tooltip"]').tooltip();
-        });
-
-        for(var property in myTrans)
-        {
-            if (myTrans.hasOwnProperty(property) && myTrans[property].isExpense == true ){
-                if(categories.Names.indexOf(myTrans[property].category.name) > -1)
-                    categories.Totals[categories.Names.indexOf(myTrans[property].category.name)] += myTrans[property].amount;
-                else {
-                    categories.Names.push(myTrans[property].category.name);
-                    categories.Totals.push(myTrans[property].amount);
-                }
-            }
-        }
-        console.log(categories);
-        createPieChart(categories)
-    }
-
-    function createPieChart(ctg)
-    {
-        var data = {
-            labels: ctg.Names,
-            series: ctg.Totals
-        };
-
-        var options = {
-            labelInterpolationFnc: function(value) {
-                return value[0]
-            },
-            width: '200px',
-            height: '300px'
-        };
-
-        var responsiveOptions = [
-          ['screen and (min-width: 250px)', {
-              chartPadding: 10,
-              labelOffset: 50,
-              labelDirection: 'explode',
-              labelInterpolationFnc: function(value) {
-                  return value;
-              }
-          }],
-          ['screen and (min-width: 1024px)', {
-              labelOffset: 30,
-              chartPadding: 20
-          }]
-        ];
-        new Chartist.Pie('#pieChart', data, options, responsiveOptions);
-    }
 </script>

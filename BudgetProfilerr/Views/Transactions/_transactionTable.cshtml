@@ -1,78 +1,131 @@
-﻿@model BudgetProfilerr.Models.ModelViews.TransactionViewModel
-<table class="table table-condensed" id="transactiontable" style="opacity:0.65">
-    <thead style="text-align: right">
-        <tr>
-            <th>Amount</th>
-            <th>Date</th>
-            <th>Description</th>
-            <th>Owner</th>
-            <th>Category</th>
-            <th>Type</th>
-        </tr>
-    </thead>
-    @foreach (var item in Model.Transactions)
-    {
-        if (item.isExpense)
-        {
+﻿@using BudgetProfilerr.Models
+@model BudgetProfilerr.Models.ModelViews.TransactionViewModel
+<div class="col-md-7">
+    <table class="table table-condensed" id="transactiontable" style="opacity:0.65">
+        <thead style="text-align: right">
             <tr>
-                <td>@Html.DisplayFor(m => item.Amount)</td>
-                <td>@Html.DisplayFor(m => item.TimeStamp)</td>
-                <td>@Html.DisplayFor(m => item.Description)</td>
-                <td>@Html.DisplayFor(s => item.User.FirstName)</td>
-                <td>@Html.DisplayFor(s => item.Category.Name)</td>
-                <td><label class="label label-danger">Expense</label></td>
-                <td>
-                    <table>
-                        <tr>
-                            <td>
-                                @using (Html.BeginForm("DeleteTransaction", "Transactions", FormMethod.Post, new { id = item.ID }))
-                                {
-                                    <input data-val="true" data-val-number="The field ID must be a number." data-val-required="The ID field is required." id="item_ID" name="deleteID" type="hidden" value=@item.ID />
-                                    <input type="submit" role="button" style="text-align: center" class="btn btn-sm btn-default" value="Delete" />
-                                }
-                            </td>
-                            <td>
-                                @using (Html.BeginForm("EditTransaction", "Transactions", FormMethod.Post, new { id = item.ID }))
-                                {
-                                    <input data-val="true" data-val-number="The field ID must be a number." data-val-required="The ID field is required." id="item_ID" name="editID" type="hidden" value=@item.ID />
-                                    <input type="submit" role="button" class="btn btn-sm  btn-warning" value="Edit" />
-                                }
-                            </td>
-                        </tr>
-                    </table>
-                </td>
+                <th>Amount</th>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Owner</th>
+                <th>Category</th>
+                <th>Type</th>
             </tr>
-        }
-        else
+        </thead>
+        @foreach (var item in Model.Transactions)
         {
-            <tr class="success">
-                <td>@Html.DisplayFor(m => item.Amount)</td>
-                <td>@Html.DisplayFor(m => item.TimeStamp)</td>
-                <td>@Html.DisplayFor(m => item.Description)</td>
-                <td>@Html.DisplayFor(s => item.User.FirstName)</td>
-                <td>@Html.DisplayFor(s => item.Category.Name)</td>
-                <td><label class="label label-success">Income</label></td>
-                <td>
-                    <table>
-                        <tr>
-                            <td>
-                                @using (Html.BeginForm("DeleteTransaction", "Transactions", FormMethod.Post, new { id = item.ID }))
-                                {
-                                    <input data-val="true" data-val-number="The field ID must be a number." data-val-required="The ID field is required." id="item_ID" name="deleteID" type="hidden" value=@item.ID />
-                                    <input type="submit" role="button" style="text-align: center" class="btn btn-sm btn-default" value="Delete" />
-                                }
-                            </td>
-                            <td>
-                                @using (Html.BeginForm("EditTransaction", "Transactions", FormMethod.Post, new { id = item.ID }))
-                                {
-                                    <input data-val="true" data-val-number="The field ID must be a number." data-val-required="The ID field is required." id="item_ID" name="editID" type="hidden" value=@item.ID />
-                                    <input type="submit" role="button" class="btn btn-sm  btn-warning" value="Edit" />
-                                }
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
+            if (item.isExpense)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(m => item.Amount)</td>
+                    <td>@Html.DisplayFor(m => item.TimeStamp)</td>
+                    <td>@Html.DisplayFor(m => item.Description)</td>
+                    <td>@Html.DisplayFor(s => item.User.FirstName)</td>
+                    <td>@Html.DisplayFor(s => item.Category.Name)</td>
+                    <td><label class="label label-danger">Expense</label></td>
+                    <td>
+                        <div class="btn-group">
+                            <button class="btn btn-secondary btn-sm btn-default" type="submit">Delete</button>      
+                            <button class="btn btn-secondary btn-sm btn-warning" type="submit">Edit</button>
+                        </div>
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr class="success">
+                    <td>@Html.DisplayFor(m => item.Amount)</td>
+                    <td>@Html.DisplayFor(m => item.TimeStamp)</td>
+                    <td>@Html.DisplayFor(m => item.Description)</td>
+                    <td>@Html.DisplayFor(s => item.User.FirstName)</td>
+                    <td>@Html.DisplayFor(s => item.Category.Name)</td>
+                    <td><label class="label label-success">Income</label></td>
+                    <td>
+                        <table>
+                            <tr>
+                                <td>
+                                    @using (Html.BeginForm("DeleteTransaction", "Transactions", FormMethod.Post, new { id = item.ID }))
+                                    {
+                                        <input data-val="true" data-val-number="The field ID must be a number." data-val-required="The ID field is required." id="item_ID" name="deleteID" type="hidden" value=@item.ID />
+                                        <input type="submit" role="button" style="text-align: center" class="btn btn-sm btn-default" value="Delete" />
+                                    }
+                                </td>
+                                <td>
+                                    @using (Html.BeginForm("EditTransaction", "Transactions", FormMethod.Post, new { id = item.ID }))
+                                    {
+                                        <input data-val="true" data-val-number="The field ID must be a number." data-val-required="The ID field is required." id="item_ID" name="editID" type="hidden" value=@item.ID />
+                                        <input type="submit" role="button" class="btn btn-sm  btn-warning" value="Edit" />
+                                    }
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            }
         }
-    }
-</table>
+    </table>
+    </div>
+    <div class="col-md-5">
+        <div class="ct-chart ct-green-section" id="pieChart"> </div>
+    </div>
+    <script>
+        var myTrans = @JavascriptConvert.SerializeObject(Model.Transactions);
+        console.log(myTrans);
+        totalExpenses(myTrans);
+
+        // Calculates the total expenses per category for cumulatively for all of the selected users.
+        function totalExpenses(myTrans) {
+            var categories = {};
+            categories.Names = [];
+            categories.Totals = [];
+
+            $(document).ready(function () {
+                $('[dataToggle="tooltip"]').tooltip();
+            });
+
+            for (var property in myTrans) {
+                if (myTrans.hasOwnProperty(property) && myTrans[property].isExpense == true) {
+                    if (categories.Names.indexOf(myTrans[property].category.name) > -1)
+                        categories.Totals[categories.Names.indexOf(myTrans[property].category.name)] += myTrans[property].amount;
+                    else {
+                        categories.Names.push(myTrans[property].category.name);
+                        categories.Totals.push(myTrans[property].amount);
+                    }
+                }
+            }
+            console.log(categories);
+            createPieChart(categories)
+        }
+
+        function createPieChart(ctg) {
+            var data = {
+                labels: ctg.Names,
+                series: ctg.Totals
+            };
+
+            var options = {
+                labelInterpolationFnc: function (value) {
+                    return value[0]
+                },
+                width: '280px',
+                height: '280px'
+            };
+
+            var responsiveOptions = [
+              ['screen and (min-width: 250px)', {
+                  chartPadding: 10,
+                  labelOffset: 50,
+                  labelDirection: 'explode',
+                  labelInterpolationFnc: function (value) {
+                      return value;
+                  }
+              }],
+              ['screen and (min-width: 1024px)', {
+                  labelOffset: 30,
+                  chartPadding: 20
+              }]
+            ];
+            new Chartist.Pie('#pieChart', data, options, responsiveOptions);
+        }
+
+    </script>

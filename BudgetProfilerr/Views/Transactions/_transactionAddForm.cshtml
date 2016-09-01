@@ -1,9 +1,14 @@
 ﻿@model BudgetProfilerr.Models.ModelViews.TransactionViewModel
 
-@using (Html.BeginForm("PublishTransaction", "Transactions", FormMethod.Post, new { @class = "form-inline" }))
+@using (Ajax.BeginForm("PublishTransactionAjax", "Transactions", new AjaxOptions {
+    InsertionMode = InsertionMode.Replace,
+    UpdateTargetId = "transactiontable",
+
+}, new { @class = "form-inline" }))
 {   <div id="transactionform" style="opacity: 0.9">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <fieldset>
+            <legend>Add Transaction</legend>
             <div class="form-group">
                 <div class="col-xs-1">
                     @Html.EditorFor(model => model.isExpense, new { htmlAttributes = new { dataToggle = "tooltip", title = "Is it an Expense?", style = "margin:7px 0px 0px 40px" } })

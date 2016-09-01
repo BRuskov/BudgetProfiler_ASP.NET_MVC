@@ -67,7 +67,7 @@ namespace BudgetProfilerr.Controllers
                 return false;
             return true;
         }
-        
+
         [HttpPost]
         public ActionResult DeleteTransaction([Bind(Include = "deleteID")] string deleteID)
         {
@@ -138,6 +138,31 @@ namespace BudgetProfilerr.Controllers
             return RedirectToAction("Index", "Transactions");
         }
 
+        [HttpPost]
+        public ActionResult PublishTransactionAjax([Bind(Include = "Amount,isExpense,OwnerID,Description,Category,TransactionDate")]  TransactionViewModel transaction)
+        {
+
+            db.Transactions.Add(new TransactionModel()
+            {
+                Amount = transaction.Amount,
+                isExpense = transaction.isExpense,
+                User = db.Users.Find(transaction.OwnerID),
+                Description = transaction.Description,
+                Category = db.Categories.Find(transaction.Category),
+                TimeStamp = transaction.TransactionDate
+            });
+            db.SaveChanges();
+
+            TransactionViewModel model = new TransactionViewModel
+            {
+                Transactions = getUsersGroupedTransactionList(getSelectedUsersList()),
+                SelectedUsers = getSelectedUsersList()
+            };
+
+            return PartialView("_transactionTable",model);
+        }
+
+
         // GET: Transactions/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -185,10 +210,9 @@ namespace BudgetProfilerr.Controllers
                        where usr.ID == id
                        select usr;
 
-            
+
             //if (id == 5)
             // return new HttpStatusCodeResult(HttpStatusCode.Found);
-
 
             List<UserModel> userSingleListItem = new List<UserModel>();
 
@@ -204,9 +228,10 @@ namespace BudgetProfilerr.Controllers
                 LastName = userSingleListItem.Single<UserModel>().LastName,
                 Transactions = getUsersGroupedTransactionList(userSingleListItem)
             };
-    
-            return PartialView("_transactionUserInformation",model);
+
+            return PartialView("_transactionUserInformation", model);
         }
+
 
         protected override void Dispose(bool disposing)
         {
