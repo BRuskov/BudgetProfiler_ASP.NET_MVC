@@ -6,10 +6,11 @@
     <!--SelectedUsersNavBar-->
     @Html.Partial("_TransactionNavBar", Model.SelectedUsers)
     <!--./SelectedUsersNavBar-->
-    <div class="col-md-3"><h3>Tab For User Specific Information</h3></div>
-    <!--SelectedUserInformation-->
-    @Html.Partial("_transactionUserInformation", Model)
-    <!--./SelectedUserInformation-->
+    <div class="col-md-6">
+        <!--SelectedUserInformation-->
+        @Html.Partial("_transactionUserInformation", Model)
+        <!--./SelectedUserInformation-->
+    </div>
 </div>
 <div class="row">
     <!--Transaction Creation-->
@@ -26,22 +27,6 @@
         <div class="ct-chart ct-green-section" id="pieChart" style="font-size: 30px"></div>
     </div>
 </div>
-<script>
-    $(function () {
-        $("li[data-provider='user']").click(function (event) {
-            //log
-            //console.log("<li> with [data-provider='user'] has been clicked.");
-            var userID = { id: event.target.id };
-            $.ajax({
-                type: 'GET',
-                url: '@Url.Action("UpdateUserInformationPView", "Transactions")',
-                data: userID,
-                dataType: 'html'
-            });
-            $(this).trigger('submit');  
-        });
-    });
-</script>
 <script>
     var myTrans = @JavascriptConvert.SerializeObject(Model.Transactions);
     console.log(myTrans);
@@ -62,7 +47,6 @@
                     $(this).fadeTo('slow',0.55)
                 })
         });
-
 
     // Calculates the total expenses per category for cumulatively for all of the selected users.
     function totalExpenses(myTrans)

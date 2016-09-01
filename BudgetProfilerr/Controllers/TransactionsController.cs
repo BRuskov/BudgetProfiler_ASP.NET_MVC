@@ -185,8 +185,9 @@ namespace BudgetProfilerr.Controllers
                        where usr.ID == id
                        select usr;
 
+            
             //if (id == 5)
-            //    return new HttpStatusCodeResult(HttpStatusCode.Found);
+            // return new HttpStatusCodeResult(HttpStatusCode.Found);
 
 
             List<UserModel> userSingleListItem = new List<UserModel>();
@@ -201,6 +202,7 @@ namespace BudgetProfilerr.Controllers
                 SelectedUsers = userSingleListItem,
                 FirstName = userSingleListItem.Single<UserModel>().FirstName,
                 LastName = userSingleListItem.Single<UserModel>().LastName,
+                Transactions = getUsersGroupedTransactionList(userSingleListItem)
             };
     
             return PartialView("_transactionUserInformation",model);

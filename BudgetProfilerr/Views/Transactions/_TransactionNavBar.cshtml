@@ -16,7 +16,7 @@
                     <li class="active"><a href="#">Users: </a></li>
                     @foreach (var user in Model)
                     {
-                        <li data-provider="user" id=@user.ID><a  id=@user.ID>@user.FirstName @user.LastName</a></li>
+                        <li data-provider="user" id=@user.ID><a id=@user.ID> @user.FirstName @user.LastName</a></li>
                     }
                     <li class="active"><a href="#"><b>Selected users </b><span class="badge">@Model.Count()</span></a></li>
                 </ul>
@@ -24,3 +24,21 @@
         </div>
     </div>
 </div>
+<script>
+    $(function () {
+        $("li[data-provider='user']").click(function (event) {
+            //log
+            //console.log("<li> with [data-provider='user'] has been clicked.");
+            var userID = { id: event.target.id };
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("UpdateUserInformationPView", "Transactions")',
+                data: userID,
+                dataType: 'html',
+                success: function (data) {
+                    $('#result').html(data);
+                }
+            });
+        });
+    });
+</script>

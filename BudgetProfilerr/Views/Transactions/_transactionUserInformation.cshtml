@@ -1,14 +1,50 @@
 ﻿@model BudgetProfilerr.Models.ModelViews.TransactionViewModel
 @{
     bool multipleUsersFlag = Model.SelectedUsers.Count > 1 ? false : true;
+    int transactions = Model.Transactions.Count;
+    int income = Model.Transactions.Where(m => m.isExpense == false).Count();
+    int expense = transactions - income;
+    var allTrans = Model.Transactions.Where(m => m.isExpense == false);
+    double balance = 0;
+    foreach (var tran in allTrans)
+    {
+        balance += tran.Amount;
+    }
+    allTrans = Model.Transactions.Where(m => m.isExpense == true);
+    foreach (var tran in allTrans)
+    {
+        balance -= tran.Amount;
+    }
 }
-@if (multipleUsersFlag)
-{
-    <p>Single User Page</p>
-    @Html.DisplayFor(m => Model.FirstName)
-    
-}
-else
-{
-    <p>Many Users</p>
-}
+<div id="result">
+    @if (multipleUsersFlag)
+    {
+        <h3>   @Model.FirstName 's <small>quick tags: </small></h3>
+        <button class="btn btn-primary btn-sm">Transactions <span class="badge">@transactions</span></button>
+        <button class="btn btn-success btn-sm">Income Transactions <span class="badge">@income</span></button>
+        <button class="btn btn-danger btn-sm">Expense Transactions <span class="badge">@expense</span></button>
+        if (balance >= 0)
+        {
+            <button class="btn btn-success btn-sm">Overall @Model.FirstName 's Balance <span class="badge">@balance $</span></button>
+        }
+        else
+        {
+            <button class="btn btn-danger btn-sm">Overall @Model.FirstName 's Balance <span class="badge">@balance $</span></button>
+        }
+    }
+    else
+    {
+        <h3>   Overall <small>quick tags: </small></h3>
+        <button class="btn btn-primary btn-sm">Transactions <span class="badge">@transactions</span></button>
+        <button class="btn btn-success btn-sm">Income Transactions <span class="badge">@income</span></button>
+        <button class="btn btn-danger btn-sm">Expense Transactions <span class="badge">@expense</span></button>
+        if (balance >= 0)
+        {
+            <button class="btn btn-success btn-sm">Overall @Model.FirstName 's Balance <span class="badge">@balance $</span></button>
+        }
+        else
+        {
+            <button class="btn btn-danger btn-sm">Overall @Model.FirstName 's Balance <span class="badge">@balance $</span></button>
+        }
+    }
+</div>
