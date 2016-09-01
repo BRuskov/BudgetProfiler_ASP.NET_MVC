@@ -20,9 +20,8 @@ namespace BudgetProfilerr.Controllers
         // GET: UserModels
         public ActionResult Index()
         {
-            List<SelectListItem> selectItemsList = new List<SelectListItem>();
-            
 
+            List<SelectListItem> selectListItemsUsers = new List<SelectListItem>();
             foreach (var user in db.Users)
             {
                 if (user != null)
@@ -32,10 +31,10 @@ namespace BudgetProfilerr.Controllers
                         Text = user.FirstName + " " + user.LastName,
                         Value = user.ID.ToString()
                     };
-                    selectItemsList.Add(selectItem);
+                    selectListItemsUsers.Add(selectItem);
                 }
             }
-            ViewBag.UsersList = selectItemsList;
+            ViewBag.UsersList = selectListItemsUsers;
 
             return View(userCrObj);
         }
@@ -48,9 +47,9 @@ namespace BudgetProfilerr.Controllers
                 return RedirectToAction("Index", "Users");
 
             List<UserModel> selectedUsers = new List<UserModel>();
-            foreach (int user in usr.SelectedUser)
+            foreach (int userID in usr.SelectedUser)
             {
-                UserModel usrMdl = db.Users.Find(user);
+                UserModel usrMdl = db.Users.Find(userID);
                 selectedUsers.Add(usrMdl);
             }
             Session["SelectedUsers"] = selectedUsers;

@@ -1,0 +1,78 @@
+﻿@model BudgetProfilerr.Models.ModelViews.TransactionViewModel
+<table class="table table-condensed" id="transactiontable" style="opacity:0.65">
+    <thead style="text-align: right">
+        <tr>
+            <th>Amount</th>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Owner</th>
+            <th>Category</th>
+            <th>Type</th>
+        </tr>
+    </thead>
+    @foreach (var item in Model.Transactions)
+    {
+        if (item.isExpense)
+        {
+            <tr>
+                <td>@Html.DisplayFor(m => item.Amount)</td>
+                <td>@Html.DisplayFor(m => item.TimeStamp)</td>
+                <td>@Html.DisplayFor(m => item.Description)</td>
+                <td>@Html.DisplayFor(s => item.User.FirstName)</td>
+                <td>@Html.DisplayFor(s => item.Category.Name)</td>
+                <td><label class="label label-danger">Expense</label></td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>
+                                @using (Html.BeginForm("DeleteTransaction", "Transactions", FormMethod.Post, new { id = item.ID }))
+                                {
+                                    <input data-val="true" data-val-number="The field ID must be a number." data-val-required="The ID field is required." id="item_ID" name="deleteID" type="hidden" value=@item.ID />
+                                    <input type="submit" role="button" style="text-align: center" class="btn btn-sm btn-default" value="Delete" />
+                                }
+                            </td>
+                            <td>
+                                @using (Html.BeginForm("EditTransaction", "Transactions", FormMethod.Post, new { id = item.ID }))
+                                {
+                                    <input data-val="true" data-val-number="The field ID must be a number." data-val-required="The ID field is required." id="item_ID" name="editID" type="hidden" value=@item.ID />
+                                    <input type="submit" role="button" class="btn btn-sm  btn-warning" value="Edit" />
+                                }
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        }
+        else
+        {
+            <tr class="success">
+                <td>@Html.DisplayFor(m => item.Amount)</td>
+                <td>@Html.DisplayFor(m => item.TimeStamp)</td>
+                <td>@Html.DisplayFor(m => item.Description)</td>
+                <td>@Html.DisplayFor(s => item.User.FirstName)</td>
+                <td>@Html.DisplayFor(s => item.Category.Name)</td>
+                <td><label class="label label-success">Income</label></td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>
+                                @using (Html.BeginForm("DeleteTransaction", "Transactions", FormMethod.Post, new { id = item.ID }))
+                                {
+                                    <input data-val="true" data-val-number="The field ID must be a number." data-val-required="The ID field is required." id="item_ID" name="deleteID" type="hidden" value=@item.ID />
+                                    <input type="submit" role="button" style="text-align: center" class="btn btn-sm btn-default" value="Delete" />
+                                }
+                            </td>
+                            <td>
+                                @using (Html.BeginForm("EditTransaction", "Transactions", FormMethod.Post, new { id = item.ID }))
+                                {
+                                    <input data-val="true" data-val-number="The field ID must be a number." data-val-required="The ID field is required." id="item_ID" name="editID" type="hidden" value=@item.ID />
+                                    <input type="submit" role="button" class="btn btn-sm  btn-warning" value="Edit" />
+                                }
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        }
+    }
+</table>

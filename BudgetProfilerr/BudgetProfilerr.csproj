@@ -164,7 +164,7 @@
     <Compile Include="Models\Entities\UserModel.cs" />
     <Compile Include="Models\JavascriptConvert.cs" />
     <Compile Include="Models\ModelViews\CreateTransactionViewModel.cs" />
-    <Compile Include="Models\ModelViews\DisplayTransactionViewModel.cs" />
+    <Compile Include="Models\ModelViews\TransactionViewModel.cs" />
     <Compile Include="Models\ModelViews\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -191,6 +191,9 @@
     <Content Include="Views\Transactions\_transactionNavBar.cshtml" />
     <Content Include="Scripts\jquery-3.1.0.slim.min.map" />
     <Content Include="Scripts\jquery-3.1.0.min.map" />
+    <Content Include="Views\Transactions\_transactionTable.cshtml" />
+    <Content Include="Views\Transactions\_transactionAddForm.cshtml" />
+    <Content Include="Views\Transactions\_transactionUserInformation.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

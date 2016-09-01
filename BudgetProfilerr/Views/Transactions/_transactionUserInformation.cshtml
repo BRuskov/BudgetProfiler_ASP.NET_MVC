@@ -1,0 +1,14 @@
+﻿@model BudgetProfilerr.Models.ModelViews.TransactionViewModel
+@{
+    bool multipleUsersFlag = Model.SelectedUsers.Count > 1 ? false : true;
+}
+@if (multipleUsersFlag)
+{
+    <p>Single User Page</p>
+    @Html.DisplayFor(m => Model.FirstName)
+    
+}
+else
+{
+    <p>Many Users</p>
+}

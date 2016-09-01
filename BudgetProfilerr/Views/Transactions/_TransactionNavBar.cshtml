@@ -16,7 +16,7 @@
                     <li class="active"><a href="#">Users: </a></li>
                     @foreach (var user in Model)
                     {
-                        <li><a href="#" >@user.FirstName @user.LastName</a></li>
+                        <li data-provider="user" id=@user.ID><a  id=@user.ID>@user.FirstName @user.LastName</a></li>
                     }
                     <li class="active"><a href="#"><b>Selected users </b><span class="badge">@Model.Count()</span></a></li>
                 </ul>

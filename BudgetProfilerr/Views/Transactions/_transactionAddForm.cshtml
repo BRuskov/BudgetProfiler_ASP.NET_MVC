@@ -1,0 +1,36 @@
+﻿@model BudgetProfilerr.Models.ModelViews.TransactionViewModel
+
+@using (Html.BeginForm("PublishTransaction", "Transactions", FormMethod.Post, new { @class = "form-inline" }))
+{   <div id="transactionform" style="opacity: 0.9">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <fieldset>
+            <div class="form-group">
+                <div class="col-xs-1">
+                    @Html.EditorFor(model => model.isExpense, new { htmlAttributes = new { dataToggle = "tooltip", title = "Is it an Expense?", style = "margin:7px 0px 0px 40px" } })
+                    @Html.ValidationMessageFor(model => model.isExpense)
+                </div>
+                <div class="col-xs-2">
+                    @Html.EditorFor(m => m.Amount, new { htmlAttributes = new { @class = "form-control input-sm", placeholder = "Amount", dataToggle = "tooltip", title = "Amount:", value = "" } })
+                    @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-xs-2">
+                    @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control input-sm col-xs-2", placeholder = "Descrption", dataToggle = "tooltip", title = "Description" } })
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-xs-2">
+                    @Html.DropDownList("OwnerID", ViewBag.UserList as IEnumerable<SelectListItem>, new { @class = "form-control input-sm", dataToggle = "tooltip", title = "Transaction Owner" })
+                </div>
+                <div class="col-xs-2">
+                    @Html.DropDownList("Category", ViewBag.CategoryList as IEnumerable<SelectListItem>, new { @class = "form-control input-sm", dataToggle = "tooltip", title = "Category: " })
+                </div>
+                <div class="col-xs-2">
+                    @Html.EditorFor(model => model.TransactionDate, new { htmlAttributes = new { @class = "from-control input-sm", dataToggle = "tooltip", title = "Transaction timestamp:" } })
+                    @Html.ValidationMessageFor(model => model.TransactionDate)
+                </div>
+                <div class="col-xs-1">
+                    <input type="submit" role="button" class="btn btn-sm btn-default" value="Add" />
+                </div>
+            </div>
+        </fieldset>
+    </div>
+}

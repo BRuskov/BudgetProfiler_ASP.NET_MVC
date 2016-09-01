@@ -24,44 +24,41 @@ namespace BudgetProfilerr.Controllers
             {
                 return RedirectToAction("Index", "Users");
             }
-
-
-
-            List<UserModel> selectedUsers = Session["SelectedUsers"] as List<UserModel>;
-
-            IQueryable<TransactionModel> queryTransactions = null;
-            queryTransactions = PopulateTransactions(queryTransactions, selectedUsers);
-
-            DisplayTransactionViewModel displayTransactions = new DisplayTransactionViewModel();
-            displayTransactions.Transactions = new List<TransactionModel>();
-            displayTransactions.Transactions = queryTransactions.ToList<TransactionModel>();
-            displayTransactions.SelectedUsers = selectedUsers;
-
+            List<UserModel> selectedUsers = getSelectedUsersList();
+            TransactionViewModel transactionViewModel = new TransactionViewModel
+            {
+                Transactions = getUsersGroupedTransactionList(getSelectedUsersList()),
+                SelectedUsers = getSelectedUsersList()
+            };
             updateCategoryDropDownList();
             updateUserDropDownList();
 
-            return View(displayTransactions);
+            return View(transactionViewModel);
         }
 
-        private IQueryable<TransactionModel> PopulateTransactions(IQueryable<TransactionModel> Transaction, List<UserModel> selectedUsers)
+        private List<TransactionModel> getUsersGroupedTransactionList(List<UserModel> selectedUsers)
         {
-            // Transaction = new TransactionModel() as IQueryable<TransactionModel>;
-            var b = GetUserTransactions(selectedUsers[0]);
+            var neededTransactions = getUserTransactions(selectedUsers[0]);
             for (int i = 1; i < selectedUsers.Count; i++)
             {
-                b = b.Union(GetUserTransactions(selectedUsers[i]));
+                neededTransactions = neededTransactions.Union(getUserTransactions(selectedUsers[i]));
 
             }
-            return b = b.OrderBy(m => m.TimeStamp);
-
+            var neededTransactionsList = neededTransactions.OrderBy(m => m.TimeStamp).ToList<TransactionModel>();
+            return neededTransactionsList;
         }
 
-        private IQueryable<TransactionModel> GetUserTransactions(UserModel usr)
+        private IQueryable<TransactionModel> getUserTransactions(UserModel usr)
         {
             var transactions = from transaction in db.Transactions.Include("User").Include("Category")
                                where transaction.User.ID == usr.ID
                                select transaction;
             return transactions;
+        }
+
+        private List<UserModel> getSelectedUsersList()
+        {
+            return Session["SelectedUsers"] as List<UserModel>;
         }
 
         private bool isTransactionModuleOperating()
@@ -70,12 +67,7 @@ namespace BudgetProfilerr.Controllers
                 return false;
             return true;
         }
-
-        private bool IsNeededTransaction()
-        {
-            return true;
-        }
-
+        
         [HttpPost]
         public ActionResult DeleteTransaction([Bind(Include = "deleteID")] string deleteID)
         {
@@ -92,35 +84,10 @@ namespace BudgetProfilerr.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET: Transactions/Details/5
-        [Authorize]
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            TransactionModel transactionModel = db.Transactions.Find(id);
-            if (transactionModel == null)
-            {
-                return HttpNotFound();
-            }
-            return View(transactionModel);
-        }
-
-        // GET: Transactions/Create
-        public ActionResult Create()
-        {
-            updateCategoryDropDownList();
-            updateUserDropDownList();
-            return View();
-        }
-
         private void updateCategoryDropDownList()
         {
-            //Implement ->  Display only user/s preferenced Categories
+            // TODO: Implement ->  Display only user/s preferenced Categories
             List<SelectListItem> CategoryList = new List<SelectListItem>();
-
             foreach (var category in db.Categories)
             {
                 if (category == null) break;
@@ -153,7 +120,7 @@ namespace BudgetProfilerr.Controllers
         }
 
         [HttpPost]
-        public ActionResult PublishTransaction([Bind(Include = "Amount,isExpense,OwnerID,Description,Category,TransactionDate")]  DisplayTransactionViewModel transaction)
+        public ActionResult PublishTransaction([Bind(Include = "Amount,isExpense,OwnerID,Description,Category,TransactionDate")]  TransactionViewModel transaction)
         {
             if (ModelState.IsValid)
             {
@@ -168,24 +135,7 @@ namespace BudgetProfilerr.Controllers
                 });
                 db.SaveChanges();
             }
-
             return RedirectToAction("Index", "Transactions");
-        }
-
-        // POST: Transactions/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Description,Amount,TimeStamp,isExpense")] TransactionModel transactionModel)
-        {
-            if (ModelState.IsValid)
-            {
-                Console.WriteLine("NONNE");
-                db.Transactions.Add(transactionModel);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            return View(transactionModel);
         }
 
         // GET: Transactions/Edit/5
@@ -217,21 +167,6 @@ namespace BudgetProfilerr.Controllers
             return View(transactionModel);
         }
 
-        // GET: Transactions/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            TransactionModel transactionModel = db.Transactions.Find(id);
-            if (transactionModel == null)
-            {
-                return HttpNotFound();
-            }
-            return View(transactionModel);
-        }
-
         // POST: Transactions/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -242,6 +177,35 @@ namespace BudgetProfilerr.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+
+        public ActionResult UpdateUserInformationPView(int id)
+        {
+            ModelState.Clear();
+            var user = from usr in getSelectedUsersList()
+                       where usr.ID == id
+                       select usr;
+
+            //if (id == 5)
+            //    return new HttpStatusCodeResult(HttpStatusCode.Found);
+
+
+            List<UserModel> userSingleListItem = new List<UserModel>();
+
+            foreach (var usr in user)
+            {
+                userSingleListItem.Add(usr);
+            }
+
+            TransactionViewModel model = new TransactionViewModel()
+            {
+                SelectedUsers = userSingleListItem,
+                FirstName = userSingleListItem.Single<UserModel>().FirstName,
+                LastName = userSingleListItem.Single<UserModel>().LastName,
+            };
+    
+            return PartialView("_transactionUserInformation",model);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

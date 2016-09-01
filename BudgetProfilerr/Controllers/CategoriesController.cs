@@ -86,6 +86,7 @@ namespace BudgetProfilerr.Controllers
                 return RedirectToAction("Index");
             }
             return View(categoryModel);
+            //cooment
         }
 
         // GET: Categories/Delete/5
